@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { useRecommendationEngine } from '../hooks/use-recomm';
+import { useFamily } from '@/contexts/FamilyContext';
 
 
 export default function OnboardingScreen() {
   const [step, setStep] = useState(1);
   const { getRecommendations, loading, recommendations } = useRecommendationEngine();
-  // Listen for the AI to finish, then navigate to the meal plan screen
+  const { setMealPlanAndGrocery, setUserPrefs } = useFamily();
+
   useEffect(() => {
     if (recommendations) {
-      router.push({
-        pathname: '/meal-plan' as any,
-        params: { aiData: JSON.stringify(recommendations) }
-      });
+      setMealPlanAndGrocery(recommendations);
+      router.replace('/(tabs)/meal-plan');
     }
-  }, [recommendations]);
+  }, [recommendations, setMealPlanAndGrocery]);
 
   
   // 1. Centralized Form State
@@ -42,17 +42,16 @@ export default function OnboardingScreen() {
 
   // 2. The Final Submit Function
   const handleFinish = async () => {
-    // This sends all the collected data to your Supabase AI Edge Function
-    await getRecommendations({
+    const userData = {
       parentName: formData.parentName,
       childrenCount: formData.childrenCount,
       budget: formData.budget,
       reloadTime: formData.reloadTime,
       priorities: formData.priorities,
       dietaryRestrictions: formData.dietaryRestrictions,
-    });
-    // Navigate to your Home/Dashboard screen here!
-    console.log("Onboarding Complete! Data sent to AI.");
+    };
+    setUserPrefs(userData);
+    await getRecommendations(userData);
   };
 
   // --- UI RENDER BLOCKS ---

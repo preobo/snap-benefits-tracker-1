@@ -1,5 +1,5 @@
 import { AIChat } from '@/components/ai-chat';
 
-export default function AIScreen() {
+export default function AssistantTabScreen() {
   return <AIChat />;
 }

@@ -6,6 +6,6 @@ export async function testConnection() {
   console.log('DATA:', data)
   console.log('ERROR:', error)
 
-  const res = await fetch('https://jplgaongreladfoidoy.supabase.co')
+  const res = await fetch('https://jlplgaongreladfoidoy.supabase.co')
 console.log('FETCH STATUS:', res.status)
 }

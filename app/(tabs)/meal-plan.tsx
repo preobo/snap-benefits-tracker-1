@@ -4,25 +4,20 @@ import { router } from 'expo-router';
 import { useFamily } from '@/contexts/FamilyContext';
 import { MealPlanContent } from '@/components/meal-plan-content';
 
-export default function MealPlanScreen() {
+export default function MealPlanTabScreen() {
   const { mealPlan, groceryList } = useFamily();
   const hasData = mealPlan.length > 0 || groceryList.length > 0;
 
   if (!hasData) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.headerRow}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Text style={styles.backArrow}>←</Text>
-          </TouchableOpacity>
-        </View>
         <View style={styles.emptyState}>
-          <Text style={styles.emptyTitle}>Your meal plan</Text>
+          <Text style={styles.emptyTitle}>Meal plan & grocery list</Text>
           <Text style={styles.emptySubtitle}>
-            Set up your household and preferences so we can build a meal plan and grocery list that fit your SNAP benefits.
+            Get a personalized meal plan and grocery list based on your SNAP benefits, household size, and preferences.
           </Text>
           <TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/onboarding')}>
-            <Text style={styles.buttonText}>Set up meal plan</Text>
+            <Text style={styles.buttonText}>Create meal plan</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -31,21 +26,13 @@ export default function MealPlanScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MealPlanContent
-        mealPlan={mealPlan}
-        groceryList={groceryList}
-        showBackButton
-        onBack={() => router.back()}
-      />
+      <MealPlanContent mealPlan={mealPlan} groceryList={groceryList} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  headerRow: { paddingHorizontal: 24, paddingTop: 20, paddingBottom: 10 },
-  backButton: { width: 40, height: 40, justifyContent: 'center' },
-  backArrow: { fontSize: 24, color: '#1a1a1a' },
   emptyState: { flex: 1, paddingHorizontal: 24, justifyContent: 'center', alignItems: 'center' },
   emptyTitle: { fontSize: 24, fontWeight: 'bold', color: '#1a1a1a', marginBottom: 12, textAlign: 'center' },
   emptySubtitle: { fontSize: 16, color: '#666', textAlign: 'center', marginBottom: 24 },

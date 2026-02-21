@@ -1,4 +1,6 @@
-export const getUser = async (id: string) => {
+import type { User, UserUpdate, ServiceResponse } from './users';
+
+export const getUser = async (id: string): Promise<ServiceResponse<User>> => {
   // We wrap this in an object with 'data' and 'error' to match Supabase's return style
   return { 
     data: {
@@ -11,7 +13,13 @@ export const getUser = async (id: string) => {
   };
 };
 
-export const updateUser = async (id: string, updates: any) => {
+export const updateUser = async (
+  id: string,
+  updates: UserUpdate
+): Promise<ServiceResponse<User[]>> => {
   console.log('HACKATHON LOG: Mocking update with:', updates);
-  return { data: updates, error: null };
+  return { 
+    data: [{ id, ...updates } as User], 
+    error: null 
+  };
 };
